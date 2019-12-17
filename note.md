@@ -40,3 +40,8 @@ We have 3M anchor at most to take paticipate in computing loss. In origin YOLO, 
     gi , gj = t[:, 2:4]*g
     # now we have [b, a, gj, gi]
 ```
+## compute loss
+For each pi in predicts, the output tensor size is Nx3*gxgx85. And we have [b, a, gj, gi] returnef from target build. `ps = pi[b, a, gj, gi]` is a tensor size of M_s x 85 tensor, where M_s is the anchors considered as obj. In origin YOLO M_s=M. 
+regression loss can be compute as `loss_regeresion(ps[:, 0:4], tbox)`
+cls loss can be compute as `loss_cls(ps[:,5:85], tcls)`
+obj loss `loss_obj(pi(tobj==1), 1 )` , noobj loss `loss_noobj(pi(tobj!=1 and iou < 0.3))`
